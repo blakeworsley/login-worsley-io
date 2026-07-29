@@ -7,6 +7,52 @@
     <meta name="description" content="Sign in to worsley.io apps" />
     <meta name="robots" content="noindex" />
     <title>login.worsley.io</title>
+    <!--
+      Theme bootstrap, applied before first paint so the hub doesn't flash the
+      wrong mode. Kept inline rather than shared because a blocking request
+      would cost more than the duplication saves — this is a verbatim copy of
+      the block in /index.html, so change both together.
+    -->
+    <script>
+      (function () {
+        try {
+          var FAMILIES = ['default','matrix','retro','modern','dracula','solarized','gruvbox','tokyo-night','cyber','high-contrast'];
+          var LEGACY = {
+            'default':['default','dark'], 'light':['default','light'],
+            'matrix':['matrix','dark'], 'retro':['retro','dark'],
+            'modern':['modern','dark'], 'dracula':['dracula','dark'],
+            'solarized-dark':['solarized','dark'], 'high-contrast':['high-contrast','dark'],
+            'cyber':['cyber','dark'], 'gruvbox-dark':['gruvbox','dark'],
+            'tokyo-night':['tokyo-night','dark']
+          };
+          function cookie(n) {
+            var m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)'));
+            return m ? decodeURIComponent(m[1]) : null;
+          }
+          var family = cookie('wio_theme') || localStorage.getItem('worsleyio-theme-family');
+          var mode = cookie('wio_mode') || localStorage.getItem('worsleyio-theme-mode');
+          if (!mode) {
+            var legacy = LEGACY[family] || LEGACY[localStorage.getItem('worsleyio-theme')];
+            if (legacy) { family = legacy[0]; mode = legacy[1]; }
+          }
+          if (FAMILIES.indexOf(family) < 0) family = 'default';
+          if (mode !== 'light' && mode !== 'dark') mode = 'system';
+          var resolved = mode === 'system'
+            ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : mode;
+          var el = document.documentElement;
+          el.setAttribute('data-theme', family);
+          el.setAttribute('data-mode', resolved);
+          el.style.colorScheme = resolved;
+
+          var scale = cookie('wio_text_scale') || localStorage.getItem('worsleyio-text-scale');
+          var SCALES = { sm: 0.9, md: 1, lg: 1.125, xl: 1.25, xxl: 1.45 };
+          if (SCALES[scale]) el.style.setProperty('--text-scale', String(SCALES[scale]));
+        } catch (e) {
+          /* provider applies it on mount */
+        }
+      })();
+    </script>
     <script>
       // GitHub Pages SPA redirect decoder (pairs with public/404.html):
       // /?/logout&next=… → /logout?next=… before the app boots.
@@ -23,8 +69,8 @@
         }
       })(window.location);
     </script>
-    <script type="module" crossorigin src="/assets/index-Cn6kzgEv.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-PE_kTG5M.css">
+    <script type="module" crossorigin src="/assets/index-I58HQusO.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Dh0qv1m3.css">
   </head>
   <body>
     <div id="root"></div>
